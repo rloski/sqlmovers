@@ -1,0 +1,139 @@
+{
+	"name": "US Government Data Catalog",
+	"properties": {
+		"description": "This is pipeline to read the harvest file to find one dataset.",
+		"activities": [
+			{
+				"name": "Get Catalog",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@pipeline().parameters.CatalogURL",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get dataset by identifier",
+				"description": "This looks for the dataset that has the identifier passed in as string",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Catalog",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Catalog').output.dataset",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals( item().identifier,pipeline().parameters.DataSetIdentifier)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "FX Distribution",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetDistributions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get dataset by identifier').output.Value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Test Variable",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Test",
+								"value": {
+									"value": "@item().modified",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "GetDistributions",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get dataset by identifier",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get dataset by identifier').output.Value[0].distribution",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(if(contains(item(),'mediaType'),item().mediaType,''), pipeline().parameters.MediaTypeFilter)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"CatalogURL": {
+				"type": "string",
+				"defaultValue": "https://data.cms.gov/data.json"
+			},
+			"DataSetIdentifier": {
+				"type": "string",
+				"defaultValue": "https://data.cms.gov/data-api/v1/dataset/9767cb68-8ea9-4f0b-8179-9431abc89f11/data-viewer"
+			},
+			"MediaTypeFilter": {
+				"type": "string",
+				"defaultValue": "text/csv"
+			}
+		},
+		"variables": {
+			"TestData": {
+				"type": "String"
+			},
+			"Test": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-07-01T21:46:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

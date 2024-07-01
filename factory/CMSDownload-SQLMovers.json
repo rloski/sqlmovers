@@ -1,0 +1,9 @@
+{
+	"name": "CMSDownload-SQLMovers",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "242c4a15-0031-4d46-aff9-180082817184",
+		"tenantId": "c6f7e7ad-d53c-4360-8103-d656decd29f4"
+	}
+}
