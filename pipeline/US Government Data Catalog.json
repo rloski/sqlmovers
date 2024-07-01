@@ -84,9 +84,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('GetDistributions').output",
+						"value": "@activity('GetDistributions').output.Value",
 						"type": "Expression"
 					},
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "Pipe Download CMS File",
