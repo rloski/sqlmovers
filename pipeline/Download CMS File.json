@@ -31,7 +31,7 @@
 				"typeProperties": {
 					"variableName": "FileURL",
 					"value": {
-						"value": "@pipeline().parameters.FileDistribution.accessURL",
+						"value": "@pipeline().parameters.FileDistribution.downloadURL",
 						"type": "Expression"
 					}
 				}
