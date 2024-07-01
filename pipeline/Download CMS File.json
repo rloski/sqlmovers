@@ -1,0 +1,14 @@
+{
+	"name": "Download CMS File",
+	"properties": {
+		"parameters": {
+			"FileDistribution": {
+				"type": "object"
+			},
+			"RootFolder": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
