@@ -48,45 +48,6 @@
 				}
 			},
 			{
-				"name": "FX Distribution",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "GetDistributions",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Get dataset by identifier').output.Value",
-						"type": "Expression"
-					},
-					"isSequential": false,
-					"activities": [
-						{
-							"name": "Test Variable",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "Test",
-								"value": {
-									"value": "@item().modified",
-									"type": "Expression"
-								}
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "GetDistributions",
 				"type": "Filter",
 				"dependsOn": [
@@ -108,6 +69,53 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "FX File In List",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "GetDistributions",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('GetDistributions').output",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Pipe Download CMS File",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Download CMS File",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"FileDistribution": {
+										"value": "@item()",
+										"type": "Expression"
+									},
+									"RootFolder": {
+										"value": "@pipeline().parameters.RootFolder",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
@@ -122,6 +130,10 @@
 			"MediaTypeFilter": {
 				"type": "string",
 				"defaultValue": "text/csv"
+			},
+			"RootFolder": {
+				"type": "string",
+				"defaultValue": "CMS"
 			}
 		},
 		"variables": {
@@ -129,6 +141,18 @@
 				"type": "String"
 			},
 			"Test": {
+				"type": "String"
+			},
+			"ModifiedDate": {
+				"type": "String"
+			},
+			"FileURL": {
+				"type": "String"
+			},
+			"FileTitle": {
+				"type": "String"
+			},
+			"FileTemporal": {
 				"type": "String"
 			}
 		},
