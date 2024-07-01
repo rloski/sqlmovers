@@ -1,12 +1,96 @@
 {
 	"name": "Download CMS File",
 	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ModifiedDate",
+					"value": {
+						"value": "@pipeline().parameters.FileDistribution.modified",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "FileURL",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileURL",
+					"value": {
+						"value": "@pipeline().parameters.FileDistribution.accessURL",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileTitle",
+					"value": {
+						"value": "@pipeline().parameters.FileDistribution.title",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable3",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileTemporal",
+					"value": {
+						"value": "@pipeline().parameters.FileDistribution.temporal",
+						"type": "Expression"
+					}
+				}
+			}
+		],
 		"parameters": {
 			"FileDistribution": {
 				"type": "object"
 			},
 			"RootFolder": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"ModifiedDate": {
+				"type": "String"
+			},
+			"FileURL": {
+				"type": "String"
+			},
+			"FileTitle": {
+				"type": "String"
+			},
+			"FileTemporal": {
+				"type": "String"
 			}
 		},
 		"annotations": []
