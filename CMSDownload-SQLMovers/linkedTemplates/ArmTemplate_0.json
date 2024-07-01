@@ -1,0 +1,292 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "CMSDownload-SQLMovers"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Download CMS File')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "ModifiedDate",
+							"value": {
+								"value": "@pipeline().parameters.FileDistribution.modified",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "FileURL",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "FileURL",
+							"value": {
+								"value": "@pipeline().parameters.FileDistribution.downloadURL",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable2",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "FileTitle",
+							"value": {
+								"value": "@pipeline().parameters.FileDistribution.title",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable3",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "FileTemporal",
+							"value": {
+								"value": "@pipeline().parameters.FileDistribution.temporal",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FileDistribution": {
+						"type": "object"
+					},
+					"RootFolder": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"ModifiedDate": {
+						"type": "String"
+					},
+					"FileURL": {
+						"type": "String"
+					},
+					"FileTitle": {
+						"type": "String"
+					},
+					"FileTemporal": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/US Government Data Catalog')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This is pipeline to read the harvest file to find one dataset.",
+				"activities": [
+					{
+						"name": "Get Catalog",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "GET",
+							"headers": {},
+							"url": {
+								"value": "@pipeline().parameters.CatalogURL",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get dataset by identifier",
+						"description": "This looks for the dataset that has the identifier passed in as string",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Catalog",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Catalog').output.dataset",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@equals( item().identifier,pipeline().parameters.DataSetIdentifier)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "GetDistributions",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get dataset by identifier",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get dataset by identifier').output.Value[0].distribution",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@equals(if(contains(item(),'mediaType'),item().mediaType,''), pipeline().parameters.MediaTypeFilter)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "FX File In List",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetDistributions",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetDistributions').output.Value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Pipe Download CMS File",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "Download CMS File",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"FileDistribution": {
+												"value": "@item()",
+												"type": "Expression"
+											},
+											"RootFolder": {
+												"value": "@pipeline().parameters.RootFolder",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"CatalogURL": {
+						"type": "string",
+						"defaultValue": "https://data.cms.gov/data.json"
+					},
+					"DataSetIdentifier": {
+						"type": "string",
+						"defaultValue": "https://data.cms.gov/data-api/v1/dataset/9767cb68-8ea9-4f0b-8179-9431abc89f11/data-viewer"
+					},
+					"MediaTypeFilter": {
+						"type": "string",
+						"defaultValue": "text/csv"
+					},
+					"RootFolder": {
+						"type": "string",
+						"defaultValue": "CMS"
+					}
+				},
+				"variables": {
+					"TestData": {
+						"type": "String"
+					},
+					"Test": {
+						"type": "String"
+					},
+					"ModifiedDate": {
+						"type": "String"
+					},
+					"FileURL": {
+						"type": "String"
+					},
+					"FileTitle": {
+						"type": "String"
+					},
+					"FileTemporal": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-07-01T21:46:03Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Download CMS File')]"
+			]
+		}
+	]
+}
