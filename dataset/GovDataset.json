@@ -1,0 +1,38 @@
+{
+	"name": "GovDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CMSDatalake",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"RootFolder": {
+				"type": "string",
+				"defaultValue": "Government"
+			},
+			"Department": {
+				"type": "string",
+				"defaultValue": "CMS"
+			},
+			"Dataset": {
+				"type": "string"
+			},
+			"FileName": {
+				"type": "string",
+				"defaultValue": "DataSet.json"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@concat(dataset().RootFolder,'\\',dataset().Department,'\\',dataset().Dataset)",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	}
+}
