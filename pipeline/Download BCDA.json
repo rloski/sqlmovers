@@ -110,6 +110,36 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Test For Completion",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Get Job Complete",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@contains(activity('Get Job Complete').output,'Response')",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Delay 5 Seconds",
+										"type": "Wait",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"waitTimeInSeconds": 5
+										}
+									}
+								]
+							}
 						}
 					],
 					"timeout": "0.12:00:00"
