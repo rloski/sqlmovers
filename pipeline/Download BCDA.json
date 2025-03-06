@@ -67,8 +67,8 @@
 				}
 			},
 			{
-				"name": "Get Job Complete",
-				"type": "WebActivity",
+				"name": "Wait for Job To Finish",
+				"type": "Until",
 				"dependsOn": [
 					{
 						"activity": "Start Job",
@@ -77,27 +77,42 @@
 						]
 					}
 				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"method": "GET",
-					"headers": {
-						"accept": "application/fhir+json",
-						"Authorization": {
-							"value": "@concat('Bearer ', activity('Get Token').output.access_token)",
-							"type": "Expression"
-						}
-					},
-					"url": {
-						"value": "@activity('Start Job').output.ADFWebActivityResponseHeaders['Content-Location']",
+					"expression": {
+						"value": "@not(empty(activity('Get Job Complete').output.Response))",
 						"type": "Expression"
-					}
+					},
+					"activities": [
+						{
+							"name": "Get Job Complete",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "GET",
+								"headers": {
+									"accept": "application/fhir+json",
+									"Authorization": {
+										"value": "@concat('Bearer ', activity('Get Token').output.access_token)",
+										"type": "Expression"
+									}
+								},
+								"url": {
+									"value": "@activity('Start Job').output.ADFWebActivityResponseHeaders['Content-Location']",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
 				}
 			}
 		],
