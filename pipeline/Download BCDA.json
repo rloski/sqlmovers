@@ -180,7 +180,11 @@
 									"type": "JsonSource",
 									"storeSettings": {
 										"type": "HttpReadSettings",
-										"requestMethod": "GET"
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "@concat('Authorization: Bearer ', activity('Get Token').output.access_token)",
+											"type": "Expression"
+										}
 									},
 									"formatSettings": {
 										"type": "JsonReadSettings"
