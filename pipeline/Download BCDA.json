@@ -156,7 +156,13 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Job Complete').output.output",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"annotations": []
