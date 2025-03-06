@@ -80,7 +80,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@not(empty(activity('Get Job Complete').output.Response))",
+						"value": "@not(contains(activity('Get Job Complete').output,'Response'))",
 						"type": "Expression"
 					},
 					"activities": [
