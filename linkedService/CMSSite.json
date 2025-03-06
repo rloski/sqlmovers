@@ -9,7 +9,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "https://sandbox.bcda.cms.gov/data/",
+			"url": "@{linkedService().fullurl}",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
