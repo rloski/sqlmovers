@@ -164,24 +164,7 @@
 					},
 					"activities": [
 						{
-							"name": "Set type",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "filetype",
-								"value": {
-									"value": "@item().type",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Copy data1",
+							"name": "Write File From Website",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
