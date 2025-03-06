@@ -1,0 +1,16 @@
+{
+	"name": "FileDump",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CMSDatalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation"
+			}
+		}
+	}
+}
