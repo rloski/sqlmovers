@@ -144,6 +144,19 @@
 					],
 					"timeout": "0.12:00:00"
 				}
+			},
+			{
+				"name": "FX Each File",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Wait for Job To Finish",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"annotations": []
