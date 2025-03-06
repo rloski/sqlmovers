@@ -164,23 +164,6 @@
 					},
 					"activities": [
 						{
-							"name": "Set url",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "fileurl",
-								"value": {
-									"value": "@item().url",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "Set type",
 							"type": "SetVariable",
 							"dependsOn": [],
@@ -243,7 +226,13 @@
 							"outputs": [
 								{
 									"referenceName": "FileDump",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": {
+											"value": "@concat(item().type,'.json')",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
