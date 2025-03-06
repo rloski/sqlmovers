@@ -1,0 +1,26 @@
+{
+	"name": "CMSBCDA_Download",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CMSSite",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"URL": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "@dataset().URL",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	}
+}
