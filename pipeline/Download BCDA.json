@@ -33,6 +33,38 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Start Job",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Get Token",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"headers": {
+						"accept": "application/fhir+json",
+						"Prefer": "respond-async",
+						"Authorization": {
+							"value": "@concat('Bearer ',activity('Get Token').output.access_token)",
+							"type": "Expression"
+						}
+					},
+					"url": "https://sandbox.bcda.cms.gov/api/v2/Group/all/\\$export"
+				}
 			}
 		],
 		"annotations": []
