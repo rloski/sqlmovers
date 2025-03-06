@@ -161,10 +161,54 @@
 					"items": {
 						"value": "@activity('Get Job Complete').output.output",
 						"type": "Expression"
-					}
+					},
+					"activities": [
+						{
+							"name": "Set url",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "fileurl",
+								"value": {
+									"value": "@item().url",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set type",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "filetype",
+								"value": {
+									"value": "@item().type",
+									"type": "Expression"
+								}
+							}
+						}
+					]
 				}
 			}
 		],
+		"variables": {
+			"filetype": {
+				"type": "String"
+			},
+			"fileurl": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
