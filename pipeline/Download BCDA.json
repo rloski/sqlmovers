@@ -219,7 +219,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"FileName": {
-											"value": "@concat(item().url,'.json')",
+											"value": "@concat(item().type,'.ndjson')",
 											"type": "Expression"
 										}
 									}
