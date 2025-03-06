@@ -1,8 +1,11 @@
 {
 	"name": "CMSDatalake",
 	"properties": {
+		"annotations": [],
 		"type": "AzureBlobFS",
-		"annotations": []
+		"typeProperties": {
+			"url": "https://loskicensusdata.dfs.core.windows.net/"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
