@@ -206,7 +206,7 @@
 									"referenceName": "CMSBCDA_Download",
 									"type": "DatasetReference",
 									"parameters": {
-										"URL": {
+										"fullurl": {
 											"value": "@item().url",
 											"type": "Expression"
 										}
