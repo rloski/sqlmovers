@@ -1,0 +1,28 @@
+{
+	"name": "JSONDump",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CMSDatalake",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().FileName",
+					"type": "Expression"
+				},
+				"folderPath": "Staging",
+				"fileSystem": "census"
+			}
+		},
+		"schema": {}
+	}
+}
