@@ -63,7 +63,7 @@
 							"type": "Expression"
 						}
 					},
-					"url": "https://sandbox.bcda.cms.gov/api/v2/Group/all/\\$export"
+					"url": "https://sandbox.bcda.cms.gov/api/v2/Group/all/$export"
 				}
 			}
 		],
