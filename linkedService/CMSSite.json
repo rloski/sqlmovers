@@ -1,6 +1,11 @@
 {
 	"name": "CMSSite",
 	"properties": {
+		"parameters": {
+			"fullurl": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
