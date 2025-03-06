@@ -3,10 +3,16 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "CMSSite",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"fullurl": {
+					"value": "@dataset().fullurl",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
-			"URL": {
+			"fullurl": {
 				"type": "string"
 			}
 		},
@@ -14,11 +20,7 @@
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "HttpServerLocation",
-				"relativeUrl": {
-					"value": "@dataset().URL",
-					"type": "Expression"
-				}
+				"type": "HttpServerLocation"
 			}
 		},
 		"schema": {}
