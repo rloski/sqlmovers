@@ -182,9 +182,10 @@
 										"type": "HttpReadSettings",
 										"requestMethod": "GET",
 										"additionalHeaders": {
-											"value": "@concat('Authorization: Bearer ', activity('Get Token').output.access_token)",
+											"value": "@{concat('Authorization: Bearer ', activity('Get Token').output.access_token)}",
 											"type": "Expression"
-										}
+										},
+										"requestTimeout": "00:05:00"
 									},
 									"formatSettings": {
 										"type": "JsonReadSettings"
