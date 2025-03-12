@@ -20,6 +20,10 @@
 						"accept": "application/json"
 					},
 					"url": "https://sandbox.bcda.cms.gov/auth/token",
+					"body": {
+						"value": "@variables('EmptyBody')",
+						"type": "Expression"
+					},
 					"authentication": {
 						"type": "Basic",
 						"username": "e75679c2-1b58-4cf5-8664-d3706de8caf5",
@@ -264,6 +268,10 @@
 			},
 			"TestVariable": {
 				"type": "String"
+			},
+			"EmptyBody": {
+				"type": "String",
+				"defaultValue": "{}"
 			}
 		},
 		"annotations": []
