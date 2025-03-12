@@ -148,7 +148,7 @@
 								{
 									"activity": "Get Job Complete",
 									"dependencyConditions": [
-										"Skipped"
+										"Succeeded"
 									]
 								}
 							],
