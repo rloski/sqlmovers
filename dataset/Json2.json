@@ -1,0 +1,19 @@
+{
+	"name": "Json2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CMSDatalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Coverage.e1c27bd2-1e83-4c48-9e83-e143a3f767c6.ndjson",
+				"fileSystem": "census"
+			}
+		},
+		"schema": {}
+	}
+}
