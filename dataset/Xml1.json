@@ -1,10 +1,6 @@
 {
 	"name": "Xml1",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorage1",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "Xml",
 		"typeProperties": {
