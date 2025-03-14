@@ -11,7 +11,8 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "net.txt",
-				"folderPath": "test1/test2"
+				"folderPath": "test1/test2",
+				"fileSystem": "test"
 			}
 		},
 		"schema": {}
