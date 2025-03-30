@@ -1,0 +1,27 @@
+{
+	"name": "CMS_Binary",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CMSSite",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"fullurl": {
+					"value": "@dataset().fullurl",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"fullurl": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation"
+			}
+		}
+	}
+}

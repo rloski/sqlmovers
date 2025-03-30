@@ -1,5 +1,5 @@
 {
-	"name": "Download BCDA",
+	"name": "Download BCDA Binary",
 	"properties": {
 		"activities": [
 			{
@@ -168,7 +168,7 @@
 					},
 					"activities": [
 						{
-							"name": "Write File From Website",
+							"name": "Copy Data Binary",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -181,53 +181,21 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "JsonSource",
+									"type": "BinarySource",
 									"storeSettings": {
 										"type": "HttpReadSettings",
-										"requestMethod": "GET",
-										"additionalHeaders": {
-											"value": "@{concat('Authorization: Bearer ', activity('Get Token').output.access_token)}",
-											"type": "Expression"
-										},
-										"requestTimeout": "00:05:00"
+										"requestMethod": "GET"
 									},
 									"formatSettings": {
-										"type": "JsonReadSettings"
-									}
-								},
-								"sink": {
-									"type": "JsonSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "JsonWriteSettings"
+										"type": "BinaryReadSettings"
 									}
 								},
 								"enableStaging": false
 							},
 							"inputs": [
 								{
-									"referenceName": "CMSBCDA_Download",
-									"type": "DatasetReference",
-									"parameters": {
-										"fullurl": {
-											"value": "@item().url",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "JSONDump",
-									"type": "DatasetReference",
-									"parameters": {
-										"FileName": {
-											"value": "@concat(item().type,'.ndjson')",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "CMS_Binary",
+									"type": "DatasetReference"
 								}
 							]
 						}
