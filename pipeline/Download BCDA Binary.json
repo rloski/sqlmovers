@@ -201,7 +201,13 @@
 							"inputs": [
 								{
 									"referenceName": "CMS_Binary",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"fullurl": {
+											"value": "@item().url",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
