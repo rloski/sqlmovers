@@ -1,0 +1,18 @@
+{
+	"name": "CMS_Binary_File",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CMSDatalake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "Staging",
+				"fileSystem": "census"
+			}
+		}
+	}
+}
