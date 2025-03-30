@@ -186,7 +186,7 @@
 										"type": "HttpReadSettings",
 										"requestMethod": "GET",
 										"additionalHeaders": {
-											"value": "@concat('Authorization: Bearer ', activity('Get Token').output.access_token, ',Accept-Encoding: gzip' )",
+											"value": "@concat('Authorization: Bearer ', activity('Get Token').output.access_token)",
 											"type": "Expression"
 										}
 									},
