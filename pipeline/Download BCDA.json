@@ -144,30 +144,6 @@
 									}
 								]
 							}
-						},
-						{
-							"name": "Set variable1",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Get Job Complete",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "TestVariable",
-								"value": {
-									"value": "@activity('Get Job Complete').status",
-									"type": "Expression"
-								}
-							}
 						}
 					],
 					"timeout": "0.12:00:00"
@@ -260,18 +236,15 @@
 			}
 		],
 		"variables": {
-			"filetype": {
-				"type": "String"
-			},
-			"fileurl": {
-				"type": "String"
-			},
-			"TestVariable": {
-				"type": "String"
-			},
 			"EmptyBody": {
 				"type": "String",
 				"defaultValue": "{}"
+			},
+			"tokenurl": {
+				"type": "String"
+			},
+			"jobstarturl": {
+				"type": "String"
 			}
 		},
 		"annotations": []
