@@ -5,12 +5,27 @@
 			"referenceName": "CMSDatalake",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			},
+			"FileType": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "Staging",
+				"fileName": {
+					"value": "@dataset().FileType",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('Staging/', dataset().FileType)",
+					"type": "Expression"
+				},
 				"fileSystem": "census"
 			}
 		}
