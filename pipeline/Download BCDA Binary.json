@@ -207,7 +207,17 @@
 							"outputs": [
 								{
 									"referenceName": "CMS_Binary_File",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": {
+											"value": "@last(split(item().url,'/'))  ",
+											"type": "Expression"
+										},
+										"FileType": {
+											"value": "@item().type",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
