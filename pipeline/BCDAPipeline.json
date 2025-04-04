@@ -180,13 +180,29 @@
 							"inputs": [
 								{
 									"referenceName": "Binary3",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"url": {
+											"value": "@item().url",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
 								{
 									"referenceName": "Binary4",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"type": {
+											"value": "@item().type",
+											"type": "Expression"
+										},
+										"filename": {
+											"value": "@last(split(item().url,'/'))",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						}
