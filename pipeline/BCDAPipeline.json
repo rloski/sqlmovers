@@ -93,7 +93,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(1,1 )",
+						"value": "@not(contains( activity('Get Job Completion').output,'Response'))",
 						"type": "Expression"
 					},
 					"activities": [
