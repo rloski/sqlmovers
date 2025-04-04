@@ -1,0 +1,33 @@
+{
+	"name": "Binary4",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CMSDatalake",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"type": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('Stage/',dataset().type)",
+					"type": "Expression"
+				},
+				"fileSystem": "census"
+			}
+		}
+	}
+}
