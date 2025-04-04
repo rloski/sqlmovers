@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"type": {
+			"filetype": {
 				"type": "string"
 			},
 			"filename": {
@@ -23,7 +23,7 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@concat('Stage/',dataset().type)",
+					"value": "@concat('Stage/',dataset().filetype)",
 					"type": "Expression"
 				},
 				"fileSystem": "census"

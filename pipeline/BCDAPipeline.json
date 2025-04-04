@@ -194,8 +194,8 @@
 									"referenceName": "Binary4",
 									"type": "DatasetReference",
 									"parameters": {
-										"type": {
-											"value": "@item().type",
+										"filetype": {
+											"value": "@item()['type']",
 											"type": "Expression"
 										},
 										"filename": {
