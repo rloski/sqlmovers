@@ -1,0 +1,152 @@
+{
+	"name": "BCDAPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Token",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"accept": "application/json"
+					},
+					"url": {
+						"value": "@variables('token_url')",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "@variables('empty_body')",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "Basic",
+						"username": {
+							"value": "@variables('client_id')",
+							"type": "Expression"
+						},
+						"password": {
+							"type": "AzureKeyVaultSecret",
+							"store": {
+								"referenceName": "CMSSecrets",
+								"type": "LinkedServiceReference"
+							},
+							"secretName": "cms-adv-secret"
+						}
+					}
+				}
+			},
+			{
+				"name": "Start Job",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Get Token",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "@concat('Bearer ',activity('Get Token').output.access_token)",
+							"type": "Expression"
+						},
+						"accept": "application/fhir+json",
+						"Prefer": "respond-async"
+					},
+					"url": {
+						"value": "@variables('job_url')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Wait For Completion",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Start Job",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(1,1 )",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Get Job Completion",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "GET",
+								"headers": {
+									"accept": "application/fhir+json",
+									"Authorization": {
+										"value": "@concat('Bearer ', activity('Get Token').output.access_token)",
+										"type": "Expression"
+									}
+								},
+								"url": {
+									"value": "@activity('Start Job').output.ADFWebActivityResponseHeaders['Content-Location']",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			}
+		],
+		"variables": {
+			"token_url": {
+				"type": "String",
+				"defaultValue": "https://sandbox.bcda.cms.gov/auth/token"
+			},
+			"client_id": {
+				"type": "String",
+				"defaultValue": "e75679c2-1b58-4cf5-8664-d3706de8caf5"
+			},
+			"empty_body": {
+				"type": "String",
+				"defaultValue": "{}"
+			},
+			"job_url": {
+				"type": "String",
+				"defaultValue": "https://sandbox.bcda.cms.gov/api/v2/Group/all/$export"
+			}
+		},
+		"annotations": []
+	}
+}
