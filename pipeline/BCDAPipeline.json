@@ -49,7 +49,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Get Token",
+						"activity": "Set Bearer Toke",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -67,7 +67,7 @@
 					"method": "GET",
 					"headers": {
 						"Authorization": {
-							"value": "@concat('Bearer ',activity('Get Token').output.access_token)",
+							"value": "@variables('bearer_token')",
 							"type": "Expression"
 						},
 						"accept": "application/fhir+json",
@@ -114,7 +114,7 @@
 								"headers": {
 									"accept": "application/fhir+json",
 									"Authorization": {
-										"value": "@concat('Bearer ', activity('Get Token').output.access_token)",
+										"value": "@variables('bearer_token')",
 										"type": "Expression"
 									}
 								},
@@ -165,7 +165,7 @@
 										"type": "HttpReadSettings",
 										"requestMethod": "GET",
 										"additionalHeaders": {
-											"value": "@concat('Authorization: Bearer ', activity('Get Token').output.access_token)",
+											"value": "@concat('Authorization: ', variables('bearer_token'))",
 											"type": "Expression"
 										}
 									},
@@ -212,6 +212,30 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Set Bearer Toke",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Token",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "bearer_token",
+					"value": {
+						"value": "Bearer {activity('Get Token').output.access_token}",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
@@ -230,6 +254,9 @@
 			"job_url": {
 				"type": "String",
 				"defaultValue": "https://sandbox.bcda.cms.gov/api/v2/Group/all/$export"
+			},
+			"bearer_token": {
+				"type": "String"
 			}
 		},
 		"annotations": []
